@@ -4,12 +4,15 @@ galaxy_info:
   description: All you need to boot a Docker server
   company: Tecnativa
   license: Apache
-  min_ansible_version: 2.6
+  min_ansible_version: "2.12"
   platforms:
   - name: Ubuntu
     versions:
     - xenial
     - bionic
+  - name: EL
+    versions:
+      - "8"
   galaxy_tags:
   - docker
   - doodba

@@ -1,19 +1,33 @@
 - name: install basic apt repos
+  when: ansible_pkg_mgr == 'apt'
   apt_repository:
     repo: deb http://archive.ubuntu.com/ubuntu {{item}} universe
   loop:
     - "{{ansible_distribution_release}}"
     - "{{ansible_distribution_release}}-updates"
 
-- name: install basic harmless dependencies
+- name: install basic harmless common dependencies
   package:
     name:
-    - apt-transport-https
     - gzip
-    - iproute2
     - python{% if ansible_python.version.major == 3 %}3{% endif %}-pip
     - python{% if ansible_python.version.major == 3 %}3{% endif %}-setuptools
     - tar
+    state: present
+
+- name: install basic harmless dependencies for apt
+  when: ansible_pkg_mgr == 'apt'
+  package:
+    name:
+    - apt-transport-https
+    - iproute2
+    state: present
+
+- name: install basic harmless dependencies for RHEL
+  when: ansible_os_family == 'RedHat'
+  package:
+    name:
+    - iproute
     state: present
 
 # Just in case we're missing the default ipv4, as explained in
